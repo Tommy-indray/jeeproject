@@ -276,7 +276,7 @@ export const api = {
       inMemoryAudits.unshift({
         id: `aud-${Date.now()}`,
         timestamp: new Date().toISOString(),
-        actor: 'Aya Benzian (Admin)',
+        actor: 'Marc Lefebvre (Admin)',
         actorRole: 'admin',
         action: 'POD_TERMINATION_SIMULATED',
         entity: 'KubernetesPod',
@@ -305,7 +305,7 @@ export const api = {
     inMemoryAudits.unshift({
       id: `aud-${Date.now()}`,
       timestamp: new Date().toISOString(),
-      actor: 'Aya Benzian (Admin)',
+      actor: 'Marc Lefebvre (Admin)',
       actorRole: 'admin',
       action: 'RISK_THRESHOLDS_UPDATED',
       entity: 'ThresholdConfig',

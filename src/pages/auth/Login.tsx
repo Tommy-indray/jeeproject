@@ -7,7 +7,7 @@ import { UserRole } from '../../types/contracts';
 export const Login: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('sarah.chen@fraud-ops.vigilia.com');
+  const [email, setEmail] = useState('david.vance@fraud-ops.vigilia.com');
   const [password, setPassword] = useState('••••••••••••');
 
   const handleRoleLogin = (role: UserRole) => {
@@ -99,7 +99,7 @@ export const Login: React.FC = () => {
               >
                 <ShieldAlert className="w-4 h-4 text-amber-600 mb-1" />
                 <p className="text-xs font-bold text-slate-800">Analyst</p>
-                <p className="text-[10px] text-slate-400">Sarah Chen</p>
+                <p className="text-[10px] text-slate-400">David Vance</p>
               </button>
 
               <button
@@ -109,7 +109,7 @@ export const Login: React.FC = () => {
               >
                 <Cpu className="w-4 h-4 text-emerald-600 mb-1" />
                 <p className="text-xs font-bold text-slate-800">Admin</p>
-                <p className="text-[10px] text-slate-400">Aya Benzian</p>
+                <p className="text-[10px] text-slate-400">Marc Lefebvre</p>
               </button>
             </div>
           </div>

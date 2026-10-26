@@ -12,7 +12,9 @@ import {
   X,
   CreditCard,
   MapPin,
-  FileText
+  FileText,
+  Lock,
+  Sparkles
 } from 'lucide-react';
 
 export const CustomerTransactionDetails: React.FC = () => {
@@ -32,17 +34,17 @@ export const CustomerTransactionDetails: React.FC = () => {
   if (!tx) {
     return (
       <div className="p-8 text-center text-xs text-slate-500">
-        Transaction record not found. <button onClick={() => navigate('/customer/transactions')} className="text-brand-blue underline">Back</button>
+        Transaction record not found. <button onClick={() => navigate('/customer/transactions')} className="text-brand-blue underline font-bold">Back</button>
       </div>
     );
   }
 
   // Calculate timeline steps
   const steps = [
-    { name: 'Payment Received', done: true, time: new Date(tx.timestamp).toLocaleTimeString() },
-    { name: 'Security Check', done: true, time: 'Automated ML validation completed' },
+    { name: 'Payment Authorized', done: true, time: new Date(tx.timestamp).toLocaleTimeString() },
+    { name: 'Anomaly & ML Verification', done: true, time: '3DS 2.0 & XGBoost evaluation completed' },
     { 
-      name: tx.status === 'PENDING_REVIEW' ? 'Under Analyst Review' : tx.status === 'REJECTED' ? 'Blocked by Security' : 'Authorized & Settled', 
+      name: tx.status === 'PENDING_REVIEW' ? 'Under Security Review' : tx.status === 'REJECTED' ? 'Blocked by Security' : 'Authorized & Settled', 
       done: true, 
       active: tx.status === 'PENDING_REVIEW',
       color: tx.status === 'REJECTED' ? 'rose' : tx.status === 'PENDING_REVIEW' ? 'amber' : 'emerald'
@@ -53,53 +55,64 @@ export const CustomerTransactionDetails: React.FC = () => {
     <div className="max-w-3xl mx-auto space-y-6">
       <button
         onClick={() => navigate('/customer/transactions')}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-navy-800 transition-colors"
       >
-        <ArrowLeft className="w-3.5 h-3.5" />
+        <ArrowLeft className="w-4 h-4" />
         Back to all transactions
       </button>
 
       {/* Main Status Header Card */}
-      <div className="bg-surface rounded-card border border-slate-200 p-6 shadow-subtle">
+      <div className="bg-surface rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-card">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
           <div>
-            <span className="text-xs font-medium text-slate-400">Transaction Status Tracker</span>
-            <h2 className="text-2xl font-bold text-slate-900 mt-1">{tx.merchant}</h2>
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+              TRANSACTION VERIFICATION SUMMARY
+            </span>
+            <h2 className="text-2xl font-black text-slate-900 mt-1">{tx.merchant}</h2>
             <p className="text-xs text-slate-500 mt-0.5">
               Authorized on {new Date(tx.timestamp).toLocaleString()}
             </p>
           </div>
           <div className="text-right">
             <span className="text-xs text-slate-400">Total Charged</span>
-            <p className="text-3xl font-extrabold text-slate-900">${tx.amount.toFixed(2)}</p>
+            <p className="text-3xl font-black text-slate-900 font-mono">${tx.amount.toFixed(2)}</p>
             <div className="mt-1 flex justify-end">
               <StatusBadge status={tx.status} size="lg" />
             </div>
           </div>
         </div>
 
-        {/* Plain Language Explanation */}
+        {/* Plain Language Reassuring Explanation */}
         <div className="py-4 text-xs text-slate-600 leading-relaxed">
           {tx.status === 'PENDING_REVIEW' && (
-            <p className="bg-amber-50 text-amber-900 p-3.5 rounded-xl border border-amber-200">
-              <strong>Why was this transaction held?</strong> This checkout occurred outside your regular purchasing patterns (unusual location distance or high amount). Our fraud safety system temporarily placed it under security review.
-            </p>
+            <div className="bg-amber-50/80 text-amber-950 p-4 rounded-xl border border-amber-200">
+              <p className="font-bold text-amber-900">Why was this transaction held?</p>
+              <p className="mt-1 text-xs text-amber-800 leading-relaxed">
+                This purchase occurred outside your regular location and spending profile (unusual distance of {tx.distanceKm.toLocaleString()} km from your registered home). Our intelligent security system temporarily placed it on hold to protect your balance.
+              </p>
+            </div>
           )}
           {tx.status === 'APPROVED' && (
-            <p className="bg-emerald-50 text-emerald-900 p-3.5 rounded-xl border border-emerald-200">
-              <strong>Protected & Cleared:</strong> This payment satisfied all cardholder security checks and was verified instantly with 3DS 2.0 authentication.
-            </p>
+            <div className="bg-emerald-50/80 text-emerald-950 p-4 rounded-xl border border-emerald-200">
+              <p className="font-bold text-emerald-900">Protected & Cleared:</p>
+              <p className="mt-1 text-xs text-emerald-800 leading-relaxed">
+                This payment satisfied all security checks, device fingerprints, and geolocation baselines. Verified instantly.
+              </p>
+            </div>
           )}
           {tx.status === 'REJECTED' && (
-            <p className="bg-rose-50 text-rose-900 p-3.5 rounded-xl border border-rose-200">
-              <strong>Transaction Declined:</strong> This transaction triggered severe fraud signals (known proxy/anonymizer and high velocity). Your card balance was not debited.
-            </p>
+            <div className="bg-rose-50/80 text-rose-950 p-4 rounded-xl border border-rose-200">
+              <p className="font-bold text-rose-900">Transaction Declined:</p>
+              <p className="mt-1 text-xs text-rose-800 leading-relaxed">
+                This checkout triggered severe fraud risk indicators (anonymized proxy network and rapid velocity burst). Your card balance was not charged.
+              </p>
+            </div>
           )}
         </div>
 
         {/* Timeline Progression Tracker */}
         <div className="mt-4 pt-4 border-t border-slate-100">
-          <p className="text-xs font-bold text-slate-800 mb-4 uppercase tracking-wider">Verification Stages</p>
+          <p className="text-xs font-bold text-slate-800 mb-5 uppercase tracking-wider">Verification Stages</p>
           <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
             {steps.map((st, i) => (
               <div key={i} className="relative">
@@ -111,7 +124,7 @@ export const CustomerTransactionDetails: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xs font-bold text-slate-900">{st.name}</p>
-                  <p className="text-[11px] text-slate-400">{st.time}</p>
+                  <p className="text-[11px] text-slate-400 font-medium">{st.time}</p>
                 </div>
               </div>
             ))}
@@ -121,36 +134,38 @@ export const CustomerTransactionDetails: React.FC = () => {
 
       {/* "Was This You?" Customer Response Box */}
       {tx.status === 'PENDING_REVIEW' && (
-        <div className="bg-surface rounded-card border-2 border-brand-blue/30 p-6 shadow-card">
-          <div className="flex items-start gap-3">
-            <HelpCircle className="w-5 h-5 text-brand-blue flex-shrink-0 mt-0.5" />
+        <div className="bg-surface rounded-2xl border-2 border-brand-blue/40 p-6 shadow-card">
+          <div className="flex items-start gap-3.5">
+            <div className="p-2 rounded-xl bg-blue-50 text-brand-blue mt-0.5">
+              <HelpCircle className="w-5 h-5" />
+            </div>
             <div className="w-full">
-              <h3 className="text-sm font-bold text-slate-900">Was this payment made by you?</h3>
+              <h3 className="text-sm font-bold text-slate-900">Did you make this purchase?</h3>
               <p className="text-xs text-slate-500 mt-1">
-                Your response is instantly recorded as verified evidence for our risk analysts.
+                Your direct confirmation is recorded as separate cryptographic evidence for our risk team.
               </p>
 
               {feedbackSubmitted ? (
-                <div className="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 flex items-center justify-between">
+                <div className="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 flex items-center justify-between">
                   <span>
                     Your confirmation has been saved: <strong className={feedbackSubmitted === 'CONFIRMED_LEGITIMATE' ? 'text-emerald-700' : 'text-rose-700'}>
-                      {feedbackSubmitted === 'CONFIRMED_LEGITIMATE' ? 'Yes, I made this purchase' : 'No, I did not make this purchase'}
+                      {feedbackSubmitted === 'CONFIRMED_LEGITIMATE' ? 'Yes, I authorized this charge' : 'No, I did not authorize this charge'}
                     </strong>
                   </span>
                   <StatusBadge status={feedbackSubmitted} size="sm" />
                 </div>
               ) : (
-                <div className="mt-4 flex items-center gap-3">
+                <div className="mt-4 flex flex-col sm:flex-row items-center gap-3">
                   <button
                     onClick={() => handleFeedback('CONFIRMED_LEGITIMATE')}
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-sm"
+                    className="w-full sm:flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm"
                   >
                     <Check className="w-4 h-4" />
                     Yes, it was me
                   </button>
                   <button
                     onClick={() => handleFeedback('REPORTED_FRAUD')}
-                    className="flex-1 bg-rose-600 hover:bg-rose-700 text-white py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-sm"
+                    className="w-full sm:flex-1 bg-rose-600 hover:bg-rose-700 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm"
                   >
                     <X className="w-4 h-4" />
                     No, lock my card
@@ -162,20 +177,19 @@ export const CustomerTransactionDetails: React.FC = () => {
         </div>
       )}
 
-      {/* Security Context details */}
-      <div className="bg-surface rounded-card border border-slate-200 p-5 shadow-subtle text-xs space-y-2.5">
+      {/* Security Context Metadata Receipt */}
+      <div className="bg-surface rounded-2xl border border-slate-200 p-5 shadow-subtle text-xs space-y-2.5">
         <h4 className="font-bold text-slate-900 flex items-center gap-2">
-          <FileText className="w-4 h-4 text-slate-500" />
+          <FileText className="w-4 h-4 text-navy-800" />
           Technical Receipt Metadata
         </h4>
         <div className="grid grid-cols-2 gap-2 text-slate-600 pt-2 border-t border-slate-100">
-          <div><span className="text-slate-400">Card Mask:</span> {tx.cardType} **** {tx.cardLast4}</div>
-          <div><span className="text-slate-400">Location:</span> {tx.merchantLocation.city}, {tx.merchantLocation.country}</div>
-          <div><span className="text-slate-400">Separation Distance:</span> {tx.distanceKm} km</div>
-          <div><span className="text-slate-400">Audit Trace:</span> <code className="font-mono text-[10px]">{tx.correlationId}</code></div>
+          <div><span className="text-slate-400">Card Mask:</span> <strong>{tx.cardType} **** {tx.cardLast4}</strong></div>
+          <div><span className="text-slate-400">Terminal Location:</span> <strong>{tx.merchantLocation.city}, {tx.merchantLocation.country}</strong></div>
+          <div><span className="text-slate-400">Separation Distance:</span> <strong>{tx.distanceKm.toLocaleString()} km</strong></div>
+          <div><span className="text-slate-400">Correlation ID:</span> <code className="font-mono text-[10px] text-brand-blue font-bold">{tx.correlationId}</code></div>
         </div>
       </div>
     </div>
   );
 };
-

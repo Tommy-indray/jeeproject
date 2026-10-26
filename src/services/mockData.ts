@@ -23,17 +23,17 @@ export const MOCK_USERS: Record<string, User> = {
   },
   analyst: {
     id: 'usr-an-204',
-    name: 'Sarah Chen',
-    email: 'sarah.chen@fraud-ops.vigilia.com',
+    name: 'David Vance',
+    email: 'david.vance@fraud-ops.vigilia.com',
     role: 'analyst',
-    avatarUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80'
+    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80'
   },
   admin: {
     id: 'usr-adm-001',
-    name: 'Aya Benzian',
+    name: 'Marc Lefebvre',
     email: 'admin@vigilia-platform.internal',
     role: 'admin',
-    avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80'
+    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80'
   }
 };
 
@@ -270,7 +270,7 @@ export const MOCK_INVESTIGATION_CASES: InvestigationCase[] = [
     },
     priority: 'HIGH',
     status: 'IN_REVIEW',
-    assignedAnalyst: 'Sarah Chen',
+    assignedAnalyst: 'David Vance',
     riskScore: 82,
     calibratedProbability: 0.82,
     uncertaintyScore: 0.38,
@@ -361,7 +361,7 @@ export const MOCK_INVESTIGATION_CASES: InvestigationCase[] = [
     },
     priority: 'LOW',
     status: 'RESOLVED',
-    assignedAnalyst: 'Sarah Chen',
+    assignedAnalyst: 'David Vance',
     riskScore: 62,
     calibratedProbability: 0.62,
     uncertaintyScore: 0.41,
@@ -372,7 +372,7 @@ export const MOCK_INVESTIGATION_CASES: InvestigationCase[] = [
       decision: 'APPROVED',
       reasonCode: 'Customer confirmed',
       notes: 'Customer confirmed online video game subscription purchase via SMS alert callback.',
-      analystName: 'Sarah Chen',
+      analystName: 'David Vance',
       resolvedAt: new Date(Date.now() - 2 * 3600 * 1000).toISOString()
     }
   }
@@ -507,7 +507,7 @@ export const MOCK_AUDIT_LOGS: AuditEvent[] = [
   {
     id: 'aud-899',
     timestamp: new Date(Date.now() - 55 * 60 * 1000).toISOString(),
-    actor: 'sarah.chen@fraud-ops.vigilia.com',
+    actor: 'david.vance@fraud-ops.vigilia.com',
     actorRole: 'analyst',
     action: 'CASE_ASSIGNED',
     entity: 'InvestigationCase',
@@ -515,12 +515,12 @@ export const MOCK_AUDIT_LOGS: AuditEvent[] = [
     result: 'SUCCESS',
     correlationId: 'c-3300bb-44aa-12',
     ipAddress: '192.168.1.102',
-    details: { assignedTo: 'Sarah Chen' }
+    details: { assignedTo: 'David Vance' }
   },
   {
     id: 'aud-898',
     timestamp: new Date(Date.now() - 2 * 3600 * 1000).toISOString(),
-    actor: 'sarah.chen@fraud-ops.vigilia.com',
+    actor: 'david.vance@fraud-ops.vigilia.com',
     actorRole: 'analyst',
     action: 'DECISION_APPROVED',
     entity: 'Transaction',
